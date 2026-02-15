@@ -1,5 +1,2 @@
-res://addons/my_plugin/plugin.cfg
-res://addons/my_plugin/L1/validator.gd
 res://addons/my_plugin/L1/ui_controller.gd
-res://addons/my_plugin/L1/response_builder.gd
 res://addons/my_plugin/plugin.gd

@@ -16,7 +16,7 @@ config/icon="res://icon.svg"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/my_plugin/plugin.cfg")
+enabled=PackedStringArray("res://addons/myPlugin/plugin.cfg", "res://addons/my_plugin/plugin.cfg")
 
 [physics]
 

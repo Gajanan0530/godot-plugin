@@ -1,11 +1,21 @@
-#extends Node
-#
-#
-## Called when the node enters the scene tree for the first time.
-#func _ready() -> void:
-	#pass # Replace with function body.
-#
-#
-## Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-	#pass
+@tool
+extends RefCounted
+
+var dock: Control
+
+func create_dock() -> Control:
+	dock = VBoxContainer.new()
+
+	var label = Label.new()
+	label.text = "Dock Panel"
+	dock.add_child(label)
+
+	return dock
+
+func get_dock() -> Control:
+	return dock
+
+func cleanup() -> void:
+	if dock:
+		dock.queue_free()
+		dock = null
