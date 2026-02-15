@@ -1,0 +1,15 @@
+63f7b34db8d8cdea90c76aacccf841ec
+::res://::1771103603
+icon.svg::CompressedTexture2D::5739709286659577989::1771099641::1771099650::1::::<><><>0<>0<>6268b83e3e96cd67283d0d50e55f22e6<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
+::res://addons/::1771099772
+::res://addons/my_plugin/::1771103198
+plugin.cfg::TextFile::-1::1771099409::0::1::::<><><>0<>0<><>::
+plugin.gd::GDScript::9023051015864166819::1771103198::0::1::::<>EditorPlugin<><>0<>1<><>::
+::res://addons/my_plugin/L1/::1771103192
+response_builder.gd::GDScript::5718886104936510243::1771103192::0::1::::<>Node<><>0<>0<><>::
+ui_controller.gd::GDScript::7227085099116949214::1771102638::0::1::::<>Node<><>0<>0<><>::
+validator.gd::GDScript::3853430066807148487::1771102660::0::1::::<>Node<><>0<>0<><>::
+::res://addons/my_plugin/tests/::1771102707
+::res://addons/my_plugin/tests/integrated/::1771102700
+::res://addons/my_plugin/tests/system/::1771102707
+::res://addons/my_plugin/tests/unit/::1771102690
