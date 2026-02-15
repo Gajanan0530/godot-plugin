@@ -7,7 +7,7 @@ func create_dock() -> Control:
 	dock = VBoxContainer.new()
 
 	var label = Label.new()
-	label.text = "Dock Panel"
+	label.text = "My Plugin Dock Panel"
 	dock.add_child(label)
 
 	return dock
