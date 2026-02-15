@@ -1,3 +1,11 @@
+
+.import/
+.export/
+.export_presets.cfg
+*.tmp
+*.import
+*.translation
+
 # Prerequisites
 *.d
 
