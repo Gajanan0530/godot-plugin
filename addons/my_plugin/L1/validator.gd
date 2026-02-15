@@ -1,11 +1,22 @@
-#extends Node
-#
-#
-## Called when the node enters the scene tree for the first time.
-#func _ready() -> void:
-	#pass # Replace with function body.
-#
-#
-## Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-	#pass
+#@tool
+extends RefCounted
+
+func validate(input_text: String) -> Dictionary:
+	if input_text == null:
+		return { "valid": false, "error": "Input cannot be null." }
+
+	var trimmed = input_text.strip_edges()
+
+	if trimmed.is_empty():
+		return { "valid": false, "error": "Input cannot be empty." }
+
+	if trimmed.length() < 10:
+		return { "valid": false, "error": "Input must be at least 10 characters long." }
+
+	if trimmed.length() > 2000:
+		return { "valid": false, "error": "Input must not exceed 2000 characters." }
+
+	if trimmed.contains("func ") or trimmed.contains("{") or trimmed.contains("}"):
+		return { "valid": false, "error": "Input contains forbidden script-like patterns." }
+
+	return { "valid": true }

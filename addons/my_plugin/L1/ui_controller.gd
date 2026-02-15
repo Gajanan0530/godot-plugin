@@ -1,5 +1,6 @@
 @tool
 extends RefCounted
+const Validator = preload("res://addons/my_plugin/L1/validator.gd")
 
 var dock: Control
 var input_field: TextEdit
@@ -33,8 +34,20 @@ func get_dock() -> Control:
 	return dock
 
 func _on_generate_pressed() -> void:
-	if input_field:
-		print(input_field.text)
+	if not input_field:
+		return
+
+	error_label.text = ""
+
+	var input_text = input_field.text
+	var result = Validator.new().validate(input_text)
+
+	if not result.get("valid", false):
+		error_label.text = result.get("error", "Unknown validation error.")
+		return
+
+	print("Validation Passed:")
+	print(input_text)
 
 func cleanup() -> void:
 	if dock:
