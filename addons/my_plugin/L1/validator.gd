@@ -1,4 +1,4 @@
-#@tool
+@tool
 extends RefCounted
 
 func validate(input_text: String) -> Dictionary:
