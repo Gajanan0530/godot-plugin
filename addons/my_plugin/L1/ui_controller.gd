@@ -1,12 +1,21 @@
 @tool
 extends RefCounted
 
+const ResponseBuilder = preload("res://addons/my_plugin/L1/response_builder.gd")
+const Validator = preload("res://addons/my_plugin/L1/validator.gd")
+
 var dock: Control
 var input_field: TextEdit
 var generate_button: Button
 var error_label: Label
 
+var response_builder: RefCounted
+var validator: RefCounted
+
 func create_dock() -> Control:
+	response_builder = ResponseBuilder.new()
+	validator = Validator.new()
+
 	dock = VBoxContainer.new()
 
 	var title_label = Label.new()
@@ -33,8 +42,24 @@ func get_dock() -> Control:
 	return dock
 
 func _on_generate_pressed() -> void:
-	if input_field:
-		print(input_field.text)
+	if not input_field or not validator or not response_builder:
+		return
+
+	error_label.text = ""
+	var start_time = Time.get_ticks_msec()
+
+	var input_text = input_field.text
+	var validation_error = validator.validate(input_text)
+
+	if not validation_error.is_empty():
+		var error_response = response_builder.build_error(validation_error)
+		error_label.text = validation_error
+		print(error_response)
+	else:
+		var end_time = Time.get_ticks_msec()
+		var processing_time = end_time - start_time
+		var success_response = response_builder.build_success(input_text, processing_time)
+		print(success_response)
 
 func cleanup() -> void:
 	if dock:
@@ -43,3 +68,5 @@ func cleanup() -> void:
 	input_field = null
 	generate_button = null
 	error_label = null
+	response_builder = null
+	validator = null
