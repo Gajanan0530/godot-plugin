@@ -1,9 +1,14 @@
 @tool
 extends RefCounted
-
+const L2ControllerClass = preload("res://addons/my_plugin/L2/l2_controller.gd")
+const RuleEngineClass = preload("res://addons/my_plugin/L3/rule_engine.gd")
+const ConditionEvaluatorClass = preload("res://addons/my_plugin/L3/condition_evaluator.gd")
+const ActionExecutorClass = preload("res://addons/my_plugin/L3/action_executor.gd")
 const ValidatorClass = preload("res://addons/my_plugin/L1/validator.gd")
 const ResponseBuilderClass = preload("res://addons/my_plugin/L1/response_builder.gd")
+#const L2ControllerClass = preload("res://addons/my_plugin/L2/l2_controller.gd")
 
+var l2_controller: RefCounted
 var dock: Control
 var input_field: TextEdit
 var generate_button: Button
@@ -15,6 +20,8 @@ var response_builder: RefCounted
 func create_dock() -> Control:
 	validator = ValidatorClass.new()
 	response_builder = ResponseBuilderClass.new()
+	l2_controller = L2ControllerClass.new()
+
 
 	dock = VBoxContainer.new()
 
@@ -58,9 +65,48 @@ func _on_generate_pressed() -> void:
 		print(error_response)
 		return
 
-	var processing_time = Time.get_ticks_msec() - start_time
-	var success_response = response_builder.build_success(input_text, processing_time)
-	print(success_response)
+	
+
+	# ===============================
+	# L2 Processing
+	# ===============================
+
+	var l2_controller = L2ControllerClass.new()
+	var l2_response = l2_controller.process({
+		"status": "success",
+		"data": {
+			"raw_user_description": input_text
+		}
+	})
+
+	print(l2_response)
+
+	if l2_response.get("status") != "success":
+		return
+
+	# ===============================
+	# L3 Execution
+	# ===============================
+
+	var rules = l2_response["behavior_schema"]["behavior_rules"]
+
+	var condition_evaluator = ConditionEvaluatorClass.new()
+	var action_executor = ActionExecutorClass.new()
+	var engine = RuleEngineClass.new(condition_evaluator, action_executor)
+
+	engine.execution_mode = "highest_only"
+
+	# Fake test context (for now)
+	var context = {
+		"player_health": 40,
+		"elapsed_time": 0,
+		"player_in_area": true
+	}
+
+	engine.evaluate(rules, context)
+	engine.debug_state()
+
+
 
 func cleanup() -> void:
 	if dock:

@@ -2,16 +2,26 @@
 extends RefCounted
 
 const SchemaContractClass = preload("res://addons/my_plugin/L2/schema_contract.gd")
+const InterpreterClass = preload("res://addons/my_plugin/L2/rule_based_interpreter.gd")
+const NormalizerClass = preload("res://addons/my_plugin/L2/schema_normalizer.gd")
 
 var schema_contract: RefCounted
+var interpreter: RefCounted
+var normalizer: RefCounted
 
 func _init():
 	schema_contract = SchemaContractClass.new()
+	interpreter = InterpreterClass.new()
+	normalizer = NormalizerClass.new()
+
+
 
 func process(l1_response: Dictionary) -> Dictionary:
 	var start_time = Time.get_ticks_msec()
 
-	# ---- INPUT CONTRACT VALIDATION ----
+	# -------------------------------
+	# L2 INPUT CONTRACT VALIDATION
+	# -------------------------------
 
 	if typeof(l1_response) != TYPE_DICTIONARY:
 		return schema_contract.build_error(
@@ -45,11 +55,20 @@ func process(l1_response: Dictionary) -> Dictionary:
 			"L2_INPUT_CONTRACT_VIOLATION"
 		)
 
-	# ---- PLACEHOLDER SUCCESS (NO PARSING YET) ----
+	var raw_text: String = data["raw_user_description"]
+
+	# -------------------------------
+	# RULE-BASED INTERPRETATION
+	# -------------------------------
+
+	var extracted_schema: Dictionary = interpreter.interpret(raw_text)
+	var normalized_schema: Dictionary = normalizer.normalize(extracted_schema)
+
 
 	var processing_time = Time.get_ticks_msec() - start_time
 
-	return schema_contract.build_success_placeholder(
-		data["raw_user_description"],
-		processing_time
-	)
+	# -------------------------------
+	# BUILD L2 SUCCESS RESPONSE
+	# -------------------------------
+
+	return schema_contract.build_success(normalized_schema, processing_time)

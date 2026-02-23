@@ -11,16 +11,10 @@ func build_error(message: String, error_type: String) -> Dictionary:
 		}
 	}
 
-func build_success_placeholder(raw_text: String, processing_time_ms: int) -> Dictionary:
+func build_success(schema: Dictionary, processing_time_ms: int) -> Dictionary:
 	return {
 		"status": "success",
-		"behavior_schema": {
-			"states": [],
-			"transitions": [],
-			"actions": [],
-			"conditions": [],
-			"_placeholder_raw_text": raw_text
-		},
+		"behavior_schema": schema,
 		"metadata": {
 			"layer": "L2",
 			"source_layer": "L1",

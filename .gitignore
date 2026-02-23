@@ -6,6 +6,7 @@
 *.tmp
 *.import
 *.translation
+*.uid
 
 # Prerequisites
 *.d
