@@ -1,11 +1,16 @@
-extends Node
+extends RefCounted
+class_name ResponseBuilder
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+func build_success(engine_result: Dictionary) -> Dictionary:
+	return {
+		"status": "success",
+		"data": engine_result
+	}
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func build_error(error_message: String) -> Dictionary:
+	return {
+		"status": "error",
+		"message": error_message
+	}
