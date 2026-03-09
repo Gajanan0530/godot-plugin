@@ -1,11 +1,27 @@
-extends Node
+extends RefCounted
+class_name Validator
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+func validate(request: Dictionary) -> Dictionary:
 
+	if not request.has("request_id"):
+		return {
+			"valid": false,
+			"error": "Missing request_id"
+		}
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+	if not request.has("context"):
+		return {
+			"valid": false,
+			"error": "Missing context"
+		}
+
+	if not request.has("rule_set"):
+		return {
+			"valid": false,
+			"error": "Missing rule_set"
+		}
+
+	return {
+		"valid": true
+	}
